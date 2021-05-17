@@ -1,4 +1,3 @@
-import React from 'react'
 import qs from 'qs'
 import {useAuth} from 'context/auth-context'
 import * as auth from 'auth-provider'
