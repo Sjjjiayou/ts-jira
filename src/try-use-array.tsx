@@ -8,16 +8,6 @@ export const TsReactTest = () => {
   ];
   const { value, add,clear, removeIndex} = useArray(persons);
 
-  useMount(() => {
-    // 期待这里报错：Property 'notExist' does not exist on type '{ name: string; age: number; }[]'.
-    // console.log(value.notExist);
-
-    // 期待这里报错：Property 'age' is missing in type '{ name: string; }' but required in type '{ name: string; age: number; }'.
-    // add({ name: "david" });
-
-    // 期待这里报错：Argument of type 'string' is not assignable to parameter of type 'number'.
-    // removeIndex("123");
-  });
   return (
     <div>
       {/*期待: 点击以后增加 john */}
