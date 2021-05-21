@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 export const isVoid = (value: unknown) => value === undefined || value === null || value === ''
 
 
-export const cleanObject = (object: {[key: string]: unknown}) => {
+export const cleanObject = (object: { [key: string]: unknown }) => {
     const result = { ...object }
     Object.keys(result).forEach(key => {
-        const value = result[key] 
+        const value = result[key]
         if (isVoid(value)) {
             delete result[key]
         }
@@ -17,7 +17,7 @@ export const cleanObject = (object: {[key: string]: unknown}) => {
 export const useMount = (callback: () => void) => {
     useEffect(() => {
         callback()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 }
 
@@ -45,4 +45,20 @@ export const useArray = <T>(initialValue: T[]) => {
             setValue(copy)
         }
     }
+}
+
+export const useDocumentTitlt = (title: string, keepOnUnmount: boolean = true) => {
+    const oldTitle = document.title
+
+    useEffect(() => {
+        document.title = title
+    }, [title])
+
+    useEffect(() => {
+        return () => {
+            if (!keepOnUnmount) {
+                document.title = oldTitle
+            }
+        }
+    }, [])
 }
