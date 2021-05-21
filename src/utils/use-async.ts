@@ -47,7 +47,6 @@ export const useAsync = <D>(initialstate?: State<D>, initialConfig?: typeof defa
             if (config.throwOnError) {
                 return Promise.reject(error)
             }
-            return error
         })
     }
     return {
