@@ -1,13 +1,14 @@
 import React from 'react'
 import { useAuth } from 'context/auth-context'
 import { ProjectListScreen } from 'screens/project-list'
-import {ProjectScreen} from 'screens/project'
+import { ProjectScreen } from 'screens/project'
 import styled from '@emotion/styled'
 import { Row } from "compontents/lib"
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
 import { Button, Dropdown, Menu } from 'antd';
 import { useDocumentTitlt } from 'utils'
-import {Navigate, Route, Router, Routes } from 'react-router'
+import { Navigate, Route, Routes} from 'react-router'
+import { BrowserRouter as Router} from 'react-router-dom'
 
 export const AuthenticatedApp = () => {
     useDocumentTitlt("项目列表", false)
@@ -15,11 +16,12 @@ export const AuthenticatedApp = () => {
         <Container>
             <PageHeader />
             <Main>
-                <ProjectListScreen />
-                <Routes>
-                    <Route path={'/projects'} element={<ProjectListScreen />}></Route>
-                    <Route path={'/projects/:projectId/*'} element={<ProjectScreen />}></Route>
-                </Routes>
+                <Router>
+                    <Routes>
+                        <Route path={"/projects"} element={<ProjectListScreen />} />
+                        <Route path={"/projects/:projectId/*"} element={<ProjectScreen />} />
+                    </Routes>
+                </Router>
             </Main>
         </Container>
     )
