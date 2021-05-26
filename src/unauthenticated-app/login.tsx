@@ -6,7 +6,7 @@ import { useAsync } from 'utils/use-async'
 import {useLocation} from "react-router"
 
 export const LoginScreen = ({ onError }: { onError: (error: Error | null) => void }) => {
-    const location = useLocation()
+    let location = useLocation()
     console.log("location",location)
 
     const { login } = useAuth()
