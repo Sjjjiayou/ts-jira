@@ -6,12 +6,10 @@ import styled from "@emotion/styled";
 import { Row } from "compontents/lib";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import { Button, Dropdown, Menu } from "antd";
-import { resetRoute, useDocumentTitlt } from "utils";
+import { resetRoute } from "utils";
 import { Navigate, Route, Routes } from "react-router";
-import { BrowserRouter as Router } from "react-router-dom";
 
 export const AuthenticatedApp = () => {
-  useDocumentTitlt("项目列表", false);
   return (
     <Container>
       <PageHeader />
