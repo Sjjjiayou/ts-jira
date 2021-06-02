@@ -5,9 +5,9 @@ import {Link} from "react-router-dom"
 import dayjs from 'dayjs';
 
 export interface Project {
-    id: string;
+    id: number;
     name: string;
-    personId: string;
+    personId: number;
     pin: boolean;
     organization: string;
     created: number;

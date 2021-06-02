@@ -6,16 +6,14 @@ import styled from '@emotion/styled';
 import { Typography } from 'antd';
 import { useProject, useUser} from 'utils/project';
 import { useDocumentTitlt } from "utils";
-import { useUrlQueryParam } from 'utils/url';
+import { useProjectsSearchParams } from './util';
 
 export const ProjectListScreen = () => {
-    const [param, setParam]= useUrlQueryParam(['name', 'personId'])
-    console.log("param",param)
-    const debouncedParam = useDebounce(param, 200)
-    const { isLoading, error, data: list } = useProject(debouncedParam)
-    const { data: users } = useUser()
     useDocumentTitlt("项目列表", false);
 
+    const [param,setParam] = useProjectsSearchParams()
+    const { isLoading, error, data: list } = useProject(useDebounce(param, 200))
+    const { data: users } = useUser()
 
     return <Container>
         <h1></h1>
@@ -27,7 +25,7 @@ export const ProjectListScreen = () => {
     </Container>
 }
 
-ProjectListScreen.whyDidYouRender = false
+ProjectListScreen.whyDidYouRender = true
 
 const Container = styled.div`
 padding: 3.2rem
