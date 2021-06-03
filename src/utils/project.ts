@@ -8,13 +8,46 @@ import {User} from 'screens/project-list/search-panel'
 export const useProject = (param?: Partial<Project>) => {
     const client = useHttp()
     const { run, ...result } = useAsync<Project[]>()
+    const fetchProject = () => client('projects', { data: cleanObject(param || {}) })
 
     useEffect(() => {
-        run(client('projects', { data: cleanObject(param || {}) }))
+        run(fetchProject(), {
+            retry: fetchProject
+        })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [param])
 
     return result
+}
+
+export const useEditPproject = () => {
+    const {run, ...asyncResult} = useAsync()
+    const client = useHttp()
+    const mutate = (params: Partial<Project>) => {
+        return run(client(`projects/${params.id}`, {
+            data: params,
+            method: 'PATCH'
+        }))
+    }
+    return {
+        mutate,
+        ...asyncResult
+    }
+}
+
+export const useAddPproject = () => {
+    const {run, ...asyncResult} = useAsync()
+    const client = useHttp()
+    const mutate = (params: Partial<Project>) => {
+        return run(client(`projects/${params.id}`, {
+            data: params,
+            method: 'POST'
+        }))
+    }
+    return {
+        mutate,
+        ...asyncResult
+    }
 }
 
 export const useUser = (param?: Partial<User>) => {
