@@ -3,7 +3,7 @@ import { SearchPanel } from './search-panel';
 import { List } from "./list";
 import { useDebounce } from 'utils/index';
 import styled from '@emotion/styled';
-import { Button, Typography } from 'antd';
+import { Typography } from 'antd';
 import { useProject, useUser} from 'utils/project';
 import { useDocumentTitlt } from "utils";
 import { useProjectsSearchParams } from './util';
@@ -13,7 +13,6 @@ export const ProjectListScreen = () => {
 
     const [param,setParam] = useProjectsSearchParams()
     const { isLoading, error, data: list, retry } = useProject(useDebounce(param, 200))
-    console.log("retry",retry)
     const { data: users } = useUser()
 
     return <Container>
