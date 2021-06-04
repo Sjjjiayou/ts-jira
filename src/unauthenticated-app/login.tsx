@@ -3,12 +3,8 @@ import { useAuth } from "context/auth-context"
 import { Form, Input } from 'antd'
 import { LongButton } from './index'
 import { useAsync } from 'utils/use-async'
-import {useLocation} from "react-router"
 
 export const LoginScreen = ({ onError }: { onError: (error: Error | null) => void }) => {
-    let location = useLocation()
-    console.log("location",location)
-
     const { login } = useAuth()
     const { run, isLoading} = useAsync(undefined, { throwOnError: true })
     const handleSubmit = async (values: { username: string, password: string }) => {

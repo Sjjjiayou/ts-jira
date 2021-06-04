@@ -5,7 +5,6 @@ import {KanbanScreen} from 'screens/Kanban'
 import {EpicScreen} from 'screens/epic'
 
 export const ProjectScreen = () => {
-    console.log("win",window)
   return (
     <div>
       <h1>ProjectScreen </h1>
