@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useMountedRef } from "utils";
 
 interface State<D> {
@@ -31,21 +31,21 @@ export const useAsync = <D>(
 
   const [retry, setRetry] = useState(() => () => {});
 
-  const setData = (data: D) =>
-    setState({
-      data,
-      stat: "success",
-      error: null,
-    });
+  const setData = useCallback((data: D) =>
+  setState({
+    data,
+    stat: "success",
+    error: null,
+  }),[])
 
-  const setError = (error: Error) =>
-    setState({
-      error,
-      stat: "error",
-      data: null,
-    });
+  const setError = useCallback((error: Error) =>
+  setState({
+    error,
+    stat: "error",
+    data: null,
+  }),[])
 
-  const run = (
+  const run = useCallback((
     promise: Promise<D>,
     runConfig?: { retry: () => Promise<D> }
   ) => {
@@ -57,10 +57,9 @@ export const useAsync = <D>(
         run(runConfig?.retry(), runConfig);
       }
     });
-    setState({ ...state, stat: "loading" });
+    setState(prevState => ({ ...prevState, stat: "loading" }));
     return promise
       .then((data) => {
-        console.log("mounted",mountedRef.current)
         if (mountedRef.current) {
           setData(data);
         }
@@ -72,7 +71,7 @@ export const useAsync = <D>(
           return Promise.reject(error);
         }
       });
-  };
+  }, [config.throwOnError, mountedRef, setData,setError])
 
   return {
     isIdle: state.stat === "idle",
