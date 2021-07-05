@@ -1,5 +1,5 @@
-import { useCallback, useEffect } from "react";
-import { cleanObject } from "utils/index";
+import { useEffect } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Project } from "screens/project-list/list";
 import { useHttp } from "utils/http";
 import { useAsync } from "utils/use-async";
@@ -7,53 +7,36 @@ import { User } from "screens/project-list/search-panel";
 
 export const useProject = (param?: Partial<Project>) => {
   const client = useHttp();
-  const { run, ...result } = useAsync<Project[]>();
-  const fetchProject = useCallback(
-    () => client("projects", { data: cleanObject(param || {}) }),
-    [client, param]
+
+  return useQuery<Project[]>(["project", param], () =>
+    client("projects", { data: param })
   );
-
-  useEffect(() => {
-    run(fetchProject(), {
-      retry: fetchProject,
-    });
-  }, [param, run, fetchProject]);
-
-  return result;
 };
 
 export const useEditPproject = () => {
-  const { run, ...asyncResult } = useAsync();
   const client = useHttp();
-  const mutate = (params: Partial<Project>) => {
-    return run(
+  const queryClient = useQueryClient();
+  return useMutation(
+    (params: Partial<Project>) =>
       client(`projects/${params.id}`, {
         data: params,
         method: "PATCH",
-      })
-    );
-  };
-  return {
-    mutate,
-    ...asyncResult,
-  };
+      }),
+    { onSuccess: () => queryClient.invalidateQueries("project") }
+  );
 };
 
 export const useAddPproject = () => {
-  const { run, ...asyncResult } = useAsync();
   const client = useHttp();
-  const mutate = (params: Partial<Project>) => {
-    return run(
-      client(`projects/${params.id}`, {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (params: Partial<Project>) =>
+      client(`projects`, {
         data: params,
         method: "POST",
-      })
-    );
-  };
-  return {
-    mutate,
-    ...asyncResult,
-  };
+      }),
+    { onSuccess: () => queryClient.invalidateQueries("project") }
+  );
 };
 
 export const useUser = (param?: Partial<User>) => {
@@ -62,8 +45,18 @@ export const useUser = (param?: Partial<User>) => {
 
   useEffect(() => {
     run(client("users"));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [param]);
+  }, [param, client, run]);
 
   return result;
+};
+
+export const useProjects = (id?: number) => {
+  const client = useHttp();
+  return useQuery<Project>(
+    ["projects", { id }],
+    () => client(`projects/${id}`),
+    {
+      enabled: !!id,
+    }
+  );
 };
