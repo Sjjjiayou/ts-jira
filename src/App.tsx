@@ -8,6 +8,7 @@ import { FullPageError } from 'compontents/lib';
 
 function App() {
   const { user } = useAuth()
+  console.log(8888888)
   return (
     <div className="App">
       <ErrorBoundary fallbackRender={FullPageError}>
