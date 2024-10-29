@@ -7,6 +7,7 @@ import {ErrorBoundary} from 'compontents/error-boundary';
 import { FullPageError } from 'compontents/lib';
 
 function App() {
+  console.log(888877777)
   const { user } = useAuth()
   return (
     <div className="App">
